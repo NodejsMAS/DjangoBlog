@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import re_path, include
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from DjangoBlog.sitemap import StaticViewSitemap, ArticleSiteMap, CategorySiteMap, TagSiteMap, UserSiteMap
@@ -35,15 +35,15 @@ handler404 = 'blog.views.page_not_found_view'
 handler500 = 'blog.views.server_error_view'
 
 urlpatterns = [
-                  url(r'^admin/', admin.site.urls),
-                  url(r'', include('blog.urls', namespace='blog', app_name='blog')),
+                  re_path(r'^admin/', admin.site.urls),
+                  re_path(r'', include('blog.urls')),
 
-                  url(r'', include('comments.urls', namespace='comment', app_name='comments')),
-                  url(r'', include('accounts.urls', namespace='account', app_name='accounts')),
-                  url(r'', include('oauth.urls', namespace='oauth', app_name='oauth')),
-                  url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-                      name='django.contrib.sitemaps.views.sitemap'),
-                  url(r'^feed/$', DjangoBlogFeed()),
-                  url(r'^search', include('haystack.urls'), name='search'),
-                  url(r'', include('servermanager.urls', namespace='servermanager', app_name='servermanagers'))
+                  re_path(r'', include('comments.urls')),
+                  re_path(r'', include('accounts.urls')),
+                  re_path(r'', include('oauth.urls')),
+                  re_path(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+                          name='django.contrib.sitemaps.views.sitemap'),
+                  re_path(r'^feed/$', DjangoBlogFeed()),
+                  re_path(r'^search', include('haystack.urls')),
+                  re_path(r'', include('servermanager.urls'))
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
